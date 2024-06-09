@@ -3,6 +3,7 @@
 if ($_SERVER["REQUEST_METHOD"] == "POST" and isset($_POST['url'])) {
     function randtext($length)
     {
+        #generate random code
         $password_len = $length;
         $password = "";
         $word = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";   //亂數內容
@@ -15,6 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" and isset($_POST['url'])) {
 
     function AppendData($url,$custom="")
     {
+        #append data to data.json
         $data = json_decode(file_get_contents("data.json"), 1);
         if($custom){
             $id = $custom;
@@ -27,13 +29,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" and isset($_POST['url'])) {
         return $id;
     }
 
-    function search($s){
+    function search(...$s){
+        #check if data be used
         $data = json_decode(file_get_contents("data.json"), 1);
-        if (isset($data[0][$s])){
-            return $data[0][$s];
-        }else{
-            return 0;
+        foreach ($s as $k => $v) {
+            if (isset($data[$k][$v])){
+                if($k===1){
+                    return $v;
+                }
+                return $data[$k][$v];
+            }
         }
+        return 0;
     }
 } else {
     header("HTTP/1.1 403 Forbidden");

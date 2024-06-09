@@ -2,14 +2,13 @@
 include ("util.php");
 #post handle
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  echo $_POST["custom-url"];
   # register data to json
   if (@isset ($_POST["url"])) {
     $data = json_decode(file_get_contents("data.json"), 1);
     $url = $_POST["url"];
     $custom = $_POST["custom-url"];
     #check if url be used
-    $s = search($url);
+    $s = search($url,$custom);
     if ($s !== 0) {
       $msg = "{\"Status\":\"Isset\",\"Url\":\"$s\"}";
     } else {
