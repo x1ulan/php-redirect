@@ -13,10 +13,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" and isset($_POST['url'])) {
         return $password;
     }
 
-    function AppendData($url)
+    function AppendData($url,$custom="")
     {
         $data = json_decode(file_get_contents("data.json"), 1);
-        $id = randtext(6);
+        if($custom){
+            $id = $custom;
+        }else{
+            $id = randtext(6);
+        }
         $data[0][$url] = $id;
         $data[1][$id] = $url;
         file_put_contents("data.json", json_encode($data, JSON_PRETTY_PRINT));
